@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeWear - Premium Coding Gear</title>
+</head>
+<body>
+        <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">&lt;/&gt;</div>
+            <div class="logo-text">
+                <h1>CodeWear</h1>
+                <p>Premium Coding Gear</p>
+            </div>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Suche nach Produkten..." id="searchInput">
+        </div>
+        <div class="cart" onclick="toggleCart()">
+            🛒
+            <span class="cart-count" id="cartCount">1</span>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <ul class="nav-links">
+            <li><a href="#tshirts" class="nav-link active">T-Shirts</a></li>
+            <li><a href="#hoodies" class="nav-link">Hoodies</a></li>
+            <li><a href="#usb-sticks" class="nav-link">USB-Sticks</a></li>
+            <li><a href="#tassen" class="nav-link">Tassen</a></li>
+            <li><a href="#socken" class="nav-link">Socken</a></li>
+            <li><a href="#about" class="nav-link">Über uns</a></li>
+            <li><a href="#kontakt" class="nav-link">Kontakt</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Wear Your <span class="highlight">Code</span></h1>
+        <p>Premium Merchandise für Developer, Programmierer und Tech-Enthusiasten. Zeig deine Leidenschaft für das Coding.</p>
+        <a href="#tshirts" class="cta-button">Jetzt entdecken</a>
+    </section>
+
+    <!-- T-Shirts Section -->
+    <section class="products" id="tshirts">
+        <h2 class="section-title">T-Shirts</h2>
+        <p class="section-description">Hochwertige T-Shirts mit coolen Developer-Motiven. 100% Baumwolle, fair produziert.</p>
+        <div class="product-grid">
+            <div class="product-card">
+                <div class="product-image">T-Shirt Mockup</div>
+                <div class="product-info">
+                    <h3 class="product-title">Hello World T-Shirt</h3>
+                    <p class="product-subtitle">Klassisches Developer T-Shirt</p>
+                    <div class="product-footer">
+                        <span class="product-price">€24,99</span>
+                        <button class="add-to-cart" onclick="addToCart('Hello World T-Shirt', 24.99)">In den Warenkorb</button>
+                    </div>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-image">T-Shirt Mockup</div>
+                <div class="product-info">
+                    <h3 class="product-title">Code Brackets Tee</h3>
+                    <p class="product-subtitle">Minimalistische Programmierer-Optik</p>
+                    <div class="product-footer">
+                        <span class="product-price">€26,99</span>
+                        <button class="add-to-cart" onclick="addToCart('Code Brackets Tee', 26.99)">In den Warenkorb</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hoodies Section -->
+    <section class="products" id="hoodies">
+        <h2 class="section-title">Hoodies</h2>
+        <p class="section-description">Warme, gemütliche Hoodies für lange Coding-Sessions. Premium-Qualität und Style.</p>
+        <div class="product-grid">
+            <div class="product-card">
+                <div class="product-image">Hoodie Mockup</div>
+                <div class="product-info">
+                    <h3 class="product-title">404 Error Hoodie</h3>
+                    <p class="product-subtitle">Perfekt für Debugging-Nächte</p>
+                    <div class="product-footer">
+                        <span class="product-price">€49,99</span>
+                        <button class="add-to-cart" onclick="addToCart('404 Error Hoodie', 49.99)">In den Warenkorb</button>
+                    </div>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-image">Hoodie Mockup</div>
+                <div class="product-info">
+                    <h3 class="product-title">Python Dev Hoodie</h3>
+                    <p class="product-subtitle">Für Snake-Charmer</p>
+                    <div class="product-footer">
+                        <span class="product-price">€52,99</span>
+                        <button class="add-to-cart" onclick="addToCart('Python Dev Hoodie', 52.99)">In den Warenkorb</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- USB-Sticks Section -->
+    <section class="products" id="usb-sticks">
+        <h2 class="section-title">USB-Sticks</h2>
+        <p class="section-description">Stylische USB-Sticks für Developer. Schnell, zuverlässig und mit coolen Designs.</p>
+        <div class="product-grid">
+            <div class="product-card">
+                <div class="product-image">USB-Stick Preview</div>
+                <div class="product-info">
+                    <h3 class="product-title">Code USB-Stick 32GB</h3>
+                    <p class="product-subtitle">Schneller USB 3.0 Stick</p>
+                    <div class="product-footer">
+                        <span class="product-price">€19,99</span>
+                        <button class="add-to-cart" onclick="addToCart('Code USB-Stick 32GB', 19.99)">In den Warenkorb</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="about-content">
+            <h2 class="section-title">Über CodeWear</h2>
+            <p>CodeWear entstand aus der Leidenschaft für Programmierung und dem Wunsch, diese Begeisterung auch im Alltag zu zeigen. Wir entwickeln hochwertige Merchandise-Artikel speziell für Developer, Programmierer und Tech-Enthusiasten.</p>
+            
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Premium Qualität</h3>
+                    <p>Nur die besten Materialien für langlebige Produkte</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Schneller Versand</h3>
+                    <p>Expresslieferung in 1-2 Werktagen</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">❤️</div>
+                    <h3>Von Devs für Devs</h3>
+                    <p>Authentische Designs von echten Programmierern</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>CodeWear</h4>
+                <p>Hochwertige Merchandise-Artikel für Developer und Tech-Enthusiasten.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Shop</h4>
+                <ul>
+                    <li><a href="#tshirts">T-Shirts</a></li>
+                    <li><a href="#hoodies">Hoodies</a></li>
+                    <li><a href="#usb-sticks">USB-Sticks</a></li>
+                    <li><a href="#tassen">Tassen</a></li>
+                    <li><a href="#socken">Socken</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#kontakt">Kontakt</a></li>
+                    <li><a href="#versand">Versand</a></li>
+                    <li><a href="#rueckgabe">Rückgabe</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Rechtliches</h4>
+                <ul>
+                    <li><a href="#impressum">Impressum</a></li>
+                    <li><a href="#datenschutz">Datenschutz</a></li>
+                    <li><a href="#agb">AGB</a></li>
+                </ul>
+                <h4>Folge uns</h4>
+                <a href="#instagram" style="color: #bdc3c7;">📷 Instagram</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 CodeWear. Alle Rechte vorbehalten. Made with <span class="heart">❤️</span> for Developers.</p>
+        </div>
+    </footer>
+</body>
+</html>
