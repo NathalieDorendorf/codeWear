@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mein Webshop - JavaScript Lernprojekt</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .shop-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+        
+        .products {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .product {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            background: #fafafa;
+        }
+        
+        .product h3 {
+            color: #333;
+            margin-top: 0;
+        }
+        
+        .price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c5aa0;
+        }
+        
+        .add-button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        
+        .add-button:hover {
+            background: #45a049;
+        }
+        
+        .cart {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            height: fit-content;
+        }
+        
+        .cart h2 {
+            color: #333;
+            margin-top: 0;
+        }
+        
+        .cart-item {
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+        }
+        
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        
+        .item-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        
+        .quantity-btn {
+            background: #2196F3;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .quantity-btn:hover {
+            background: #1976D2;
+        }
+        
+        .delete-btn {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: auto;
+        }
+        
+        .delete-btn:hover {
+            background: #d32f2f;
+        }
+        
+        .total {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c5aa0;
+            text-align: center;
+            padding: 20px;
+            background: #e3f2fd;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .pay-button {
+            background: #FF9800;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+        
+        .pay-button:hover {
+            background: #F57C00;
+        }
+        
+        .pay-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .success-message {
+            background: #4CAF50;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            margin-top: 20px;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* PayPal Modal Styles */
+        .paypal-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .paypal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .paypal-header {
+            background: #0070ba;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .paypal-body {
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .order-summary {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border-left: 4px solid #0070ba;
+        }
+        
+        .paypal-login {
+            margin: 20px 0;
+        }
+        
+        .paypal-input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        
+        .paypal-input:focus {
+            border-color: #0070ba;
+            outline: none;
+        }
+        
+        .paypal-btn {
+            background: #0070ba;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            width: 100%;
+            margin: 10px 0;
+        }
+        
+        .paypal-btn:hover {
+            background: #005ea6;
+        }
+        
+        .paypal-cancel {
+            background: #6c757d;
+        }
+        
+        .paypal-cancel:hover {
+            background: #545b62;
+        }
+        
+        .close {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+        
+        .close:hover {
+            opacity: 0.7;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #0070ba;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .empty-cart {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🛍️ Mein JavaScript Webshop</h1>
+    
+    <div class="shop-container">
+        <!-- PRODUKTE SEKTION -->
+        <div class="products">
+            <h2>Unsere Produkte</h2>
+            
+            <div class="product">
+                <h3>🍎 Apfel</h3>
+                <p>Frische, rote Äpfel aus der Region</p>
+                <div class="price">2.50 €</div>
+                <button class="add-button" onclick="addToCart('Apfel', 2.50, '🍎')">
+                    In den Warenkorb
+                </button>
+            </div>
+            
+            <div class="product">
+                <h3>🍌 Banane</h3>
+                <p>Süße, gelbe Bananen</p>
+                <div class="price">1.80 €</div>
+                <button class="add-button" onclick="addToCart('Banane', 1.80, '🍌')">
+                    In den Warenkorb
+                </button>
+            </div>
+            
+            <div class="product">
+                <h3>🥛 Milch</h3>
+                <p>Frische Vollmilch, 1 Liter</p>
+                <div class="price">1.20 €</div>
+                <button class="add-button" onclick="addToCart('Milch', 1.20, '🥛')">
+                    In den Warenkorb
+                </button>
+            </div>
+            
+            <div class="product">
+                <h3>🍞 Brot</h3>
+                <p>Frisches Vollkornbrot</p>
+                <div class="price">3.50 €</div>
+                <button class="add-button" onclick="addToCart('Brot', 3.50, '🍞')">
+                    In den Warenkorb
+                </button>
+            </div>
+        </div>
+        
+        <!-- WARENKORB SEKTION -->
+        <div class="cart">
+            <h2>🛒 Warenkorb</h2>
+            <div id="cart-items">
+                <div class="empty-cart">
+                    Dein Warenkorb ist leer
+                </div>
+            </div>
+            <div id="total" class="total">
+                Gesamt: 0.00 €
+            </div>
+            <button id="pay-button" class="pay-button" onclick="openPayPal()" disabled>
+                💳 Mit PayPal bezahlen
+            </button>
+            <div id="success-message"></div>
+        </div>
+    </div>
+
+    <!-- PayPal Modal -->
+    <div id="paypal-modal" class="paypal-modal">
+        <div class="paypal-content">
+            <div class="paypal-header">
+                <span class="close" onclick="closePayPal()">&times;</span>
+                💙 PayPal
+            </div>
+            <div class="paypal-body">
+                <h3>Sichere Zahlung mit PayPal</h3>
+                
+                <div id="order-summary" class="order-summary">
+                    <!-- Wird mit JavaScript gefüllt -->
+                </div>
+                
+                <div class="paypal-login">
+                    <p><strong>Mit PayPal-Konto anmelden:</strong></p>
+                    <input type="email" class="paypal-input" placeholder="E-Mail-Adresse" value="demo@example.com">
+                    <input type="password" class="paypal-input" placeholder="Passwort" value="••••••••">
+                </div>
+                
+                <button class="paypal-btn" onclick="processPayment()">
+                    <span id="pay-btn-text">Zahlung bestätigen</span>
+                    <span id="loading-spinner" class="loading" style="display: none;"></span>
+                </button>
+                
+                <button class="paypal-btn paypal-cancel" onclick="closePayPal()">
+                    Abbrechen
+                </button>
+                
+                <p style="font-size: 12px; color: #666; margin-top: 20px;">
+                    🔒 Dies ist eine Demo-Version für Lernzwecke.<br>
+                    Es werden keine echten Zahlungen verarbeitet!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== SCHRITT 1: WARENKORB ERSTELLEN =====
+        // Dies ist unser "Behälter" für alle Artikel im Warenkorb
+        let warenkorb = []; // Eine leere Liste (Array)
+        
+        // ===== SCHRITT 2: FUNKTION ZUM HINZUFÜGEN =====
+        function addToCart(name, preis, emoji) {
+            console.log("Füge hinzu:", name, preis, emoji); // Zum Debuggen
+            
+            // Schauen, ob der Artikel schon im Warenkorb ist
+            let gefunden = false;
+            
+            // Durch alle Artikel im Warenkorb schauen
+            for (let i = 0; i < warenkorb.length; i++) {
+                if (warenkorb[i].name === name) {
+                    // Artikel gefunden! Menge um 1 erhöhen
+                    warenkorb[i].menge = warenkorb[i].menge + 1;
+                    gefunden = true;
+                    break; // Stoppe die Suche
+                }
+            }
+            
+            // Wenn der Artikel noch nicht im Warenkorb ist
+            if (!gefunden) {
+                // Neuen Artikel hinzufügen
+                let neuerArtikel = {
+                    name: name,
+                    preis: preis,
+                    emoji: emoji,
+                    menge: 1
+                };
+                warenkorb.push(neuerArtikel); // An die Liste anhängen
+            }
+            
+            updateCartDisplay(); // Warenkorb-Anzeige aktualisieren
+        }
+        
+        // ===== SCHRITT 3: MENGE ÄNDERN =====
+        function changeMenge(name, aenderung) {
+            console.log("Ändere Menge für:", name, "um", aenderung);
+            
+            // Durch alle Artikel im Warenkorb schauen
+            for (let i = 0; i < warenkorb.length; i++) {
+                if (warenkorb[i].name === name) {
+                    // Menge ändern
+                    warenkorb[i].menge = warenkorb[i].menge + aenderung;
+                    
+                    // Wenn Menge 0 oder weniger wird, Artikel löschen
+                    if (warenkorb[i].menge <= 0) {
+                        warenkorb.splice(i, 1); // Artikel aus der Liste entfernen
+                    }
+                    break;
+                }
+            }
+            
+            updateCartDisplay(); // Anzeige aktualisieren
+        }
+        
+        // ===== SCHRITT 4: ARTIKEL LÖSCHEN =====
+        function deleteItem(name) {
+            console.log("Lösche Artikel:", name);
+            
+            // Durch alle Artikel im Warenkorb schauen
+            for (let i = 0; i < warenkorb.length; i++) {
+                if (warenkorb[i].name === name) {
+                    warenkorb.splice(i, 1); // Artikel komplett entfernen
+                    break;
+                }
+            }
+            
+            updateCartDisplay(); // Anzeige aktualisieren
+        }
+        
+        // ===== SCHRITT 5: ANZEIGE AKTUALISIEREN =====
+        function updateCartDisplay() {
+            console.log("Aktueller Warenkorb:", warenkorb);
+            
+            let cartContainer = document.getElementById('cart-items');
+            let totalContainer = document.getElementById('total');
+            let payButton = document.getElementById('pay-button');
+            let successMessage = document.getElementById('success-message');
+            
+            // Erfolgsmeldung löschen bei neuen Änderungen
+            successMessage.innerHTML = '';
+            
+            // Wenn Warenkorb leer ist
+            if (warenkorb.length === 0) {
+                cartContainer.innerHTML = '<div class="empty-cart">Dein Warenkorb ist leer</div>';
+                totalContainer.innerHTML = 'Gesamt: 0.00 €';
+                payButton.disabled = true; // Button deaktivieren
+                return;
+            }
+            
+            // HTML für alle Artikel erstellen
+            let html = '';
+            let gesamtpreis = 0;
+            
+            // Durch alle Artikel im Warenkorb gehen
+            for (let i = 0; i < warenkorb.length; i++) {
+                let artikel = warenkorb[i];
+                let artikelPreis = artikel.preis * artikel.menge;
+                gesamtpreis = gesamtpreis + artikelPreis;
+                
+                html += `
+                    <div class="cart-item">
+                        <div>
+                            <strong>${artikel.emoji} ${artikel.name}</strong><br>
+                            ${artikel.preis.toFixed(2)} € x ${artikel.menge} = ${artikelPreis.toFixed(2)} €
+                        </div>
+                        <div class="item-controls">
+                            <button class="quantity-btn" onclick="changeMenge('${artikel.name}', -1)">-</button>
+                            <span>${artikel.menge}</span>
+                            <button class="quantity-btn" onclick="changeMenge('${artikel.name}', 1)">+</button>
+                            <button class="delete-btn" onclick="deleteItem('${artikel.name}')">🗑️</button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // HTML in die Webseite einfügen
+            cartContainer.innerHTML = html;
+            totalContainer.innerHTML = `Gesamt: ${gesamtpreis.toFixed(2)} €`;
+            
+            // Bezahlen-Button aktivieren wenn Artikel im Warenkorb
+            payButton.disabled = false;
+        }
+        
+        // ===== SCHRITT 6: PAYPAL MODAL FUNKTIONEN =====
+        function openPayPal() {
+            console.log("PayPal Modal wird geöffnet!");
+            
+            // Prüfen ob Warenkorb leer ist
+            if (warenkorb.length === 0) {
+                alert("⚠️ Der Warenkorb ist leer!");
+                return;
+            }
+            
+            // Bestellübersicht erstellen
+            let gesamtpreis = 0;
+            let orderHtml = '<h4>📦 Deine Bestellung:</h4>';
+            
+            for (let i = 0; i < warenkorb.length; i++) {
+                let artikel = warenkorb[i];
+                let artikelPreis = artikel.preis * artikel.menge;
+                gesamtpreis += artikelPreis;
+                
+                orderHtml += `
+                    <div style="display: flex; justify-content: space-between; margin: 5px 0;">
+                        <span>${artikel.emoji} ${artikel.name} (${artikel.menge}x)</span>
+                        <span><strong>${artikelPreis.toFixed(2)} €</strong></span>
+                    </div>
+                `;
+            }
+            
+            orderHtml += `
+                <hr style="margin: 15px 0;">
+                <div style="display: flex; justify-content: space-between; font-size: 18px;">
+                    <span><strong>Gesamt:</strong></span>
+                    <span><strong>${gesamtpreis.toFixed(2)} €</strong></span>
+                </div>
+            `;
+            
+            // HTML in Modal einfügen
+            document.getElementById('order-summary').innerHTML = orderHtml;
+            
+            // Modal anzeigen
+            document.getElementById('paypal-modal').style.display = 'block';
+        }
+        
+        function closePayPal() {
+            console.log("PayPal Modal wird geschlossen!");
+            document.getElementById('paypal-modal').style.display = 'none';
+            
+            // Button-Text zurücksetzen falls nötig
+            document.getElementById('pay-btn-text').style.display = 'inline';
+            document.getElementById('loading-spinner').style.display = 'none';
+        }
+        
+        function processPayment() {
+            console.log("PayPal Zahlung wird verarbeitet...");
+            
+            // Loading-Animation anzeigen
+            document.getElementById('pay-btn-text').style.display = 'none';
+            document.getElementById('loading-spinner').style.display = 'inline-block';
+            
+            // Simuliere Zahlungsverarbeitung (3 Sekunden)
+            setTimeout(() => {
+                // Gesamtpreis berechnen
+                let gesamtpreis = 0;
+                let anzahlArtikel = 0;
+                
+                for (let i = 0; i < warenkorb.length; i++) {
+                    gesamtpreis += warenkorb[i].preis * warenkorb[i].menge;
+                    anzahlArtikel += warenkorb[i].menge;
+                }
+                
+                // Erfolgsmeldung anzeigen
+                let successContainer = document.getElementById('success-message');
+                successContainer.innerHTML = `
+                    <div class="success-message">
+                        ✅ PayPal-Zahlung erfolgreich!<br>
+                        💙 ${gesamtpreis.toFixed(2)} € wurden von deinem PayPal-Konto abgebucht<br>
+                        📧 Bestätigungs-E-Mail wurde gesendet<br>
+                        <small>Bestellnummer: #PP${Math.floor(Math.random() * 100000)} 📦</small>
+                    </div>
+                `;
+                
+                // Warenkorb leeren
+                warenkorb = [];
+                
+                // Modal schließen
+                closePayPal();
+                
+                // Anzeige aktualisieren
+                updateCartDisplay();
+                
+                console.log("✅ PayPal-Zahlung abgeschlossen! Warenkorb geleert.");
+                
+            }, 3000); // 3 Sekunden Wartezeit für Realismus
+        }
+        
+        // Modal schließen wenn außerhalb geklickt wird
+        window.onclick = function(event) {
+            let modal = document.getElementById('paypal-modal');
+            if (event.target === modal) {
+                closePayPal();
+            }
+        }
+        
+        // ===== ZUSATZ: KONSOLEN-AUSGABEN FÜR LERNEN =====
+        console.log("JavaScript Webshop mit PayPal-Integration geladen!");
+        console.log("Probiere die Buttons aus und schaue hier in die Konsole!");
+        console.log("💡 Tipp: Füge Artikel hinzu und probiere PayPal aus!");
+        console.log("🔒 WICHTIG: Dies ist nur eine Demo - keine echten Zahlungen!");
+    </script>
+</body>
+</html>
